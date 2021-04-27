@@ -1,0 +1,4 @@
+node_modules
+msvs/x64
+msvs/Release
+bin

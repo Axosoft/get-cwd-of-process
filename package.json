@@ -1,0 +1,16 @@
+{
+  "name": "get-cwd-of-process",
+  "version": "0.1.0",
+  "description": "Gets the pid of another process",
+  "main": "src/index.js",
+  "repository": "git@github.com:implausible/win32ReadCwd.git",
+  "author": "Tyler Ang-Wanek <tylerw@axosoft.com>",
+  "license": "MIT",
+  "scripts": {
+    "install": "node scripts/install.js"
+  },
+  "devDependencies": {
+    "find-msbuild": "^1.2.1",
+    "node-gyp": "^8.0.0"
+  }
+}

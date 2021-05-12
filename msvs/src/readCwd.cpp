@@ -228,6 +228,6 @@ int main(int argc, char **argv) {
     return -1;
   }
 
-	std::wcout << str << std::endl;
+	std::wcout << str;
   return 0;
 }

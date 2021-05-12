@@ -141,7 +141,9 @@ NTSTATUS readCwd(wchar_t **outputString, unsigned long pid) {
       return status;
     }
 
-    cwdString = new WCHAR[initReadString.Length + 1];
+    size_t strLength = initReadString.Length + 1;
+    cwdString = new WCHAR[strLength];
+    cwdString[strLength / 2] = 0;
     if (!NT_SUCCESS(status = nt.readVirtualMemory(
       processHandle,
       initReadString.Buffer,
@@ -155,6 +157,7 @@ NTSTATUS readCwd(wchar_t **outputString, unsigned long pid) {
     ULONG offset = FIELD_OFFSET(LOCAL_RTL_USER_PROCESS_PARAMETERS32, CurrentDirectory);
     PVOID peb32;
     ULONG processParameters32;
+
 
     if (!NT_SUCCESS(status = nt.queryInformationProcess(
       processHandle,
@@ -195,7 +198,9 @@ NTSTATUS readCwd(wchar_t **outputString, unsigned long pid) {
       return status;
     }
 
-    cwdString = new wchar_t[initReadString.Length + 1];
+    size_t strLength = initReadString.Length + 1;
+    cwdString = new WCHAR[strLength];
+    cwdString[strLength / 2] = 0;
     if (!NT_SUCCESS(status = nt.readVirtualMemory(
       processHandle,
       UlongToPtr(initReadString.Buffer),

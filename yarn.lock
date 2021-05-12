@@ -167,11 +167,6 @@ err-code@^2.0.2:
   resolved "https://registry.npmjs.org/err-code/-/err-code-2.0.3.tgz#23c2f3b756ffdfc608d30e27c9a941024807e7f9"
   integrity sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==
 
-find-msbuild@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/find-msbuild/-/find-msbuild-1.2.1.tgz#3f2a99b1b8ebd2f65435dc612379d0fc13175882"
-  integrity sha512-Bv4hJ46aiN5tlxQkIDdyBEVf6kyEEgz32JBccxhYj/ZM6LGXG1QgS3akCvx1dRMqGzbMnmHvAWGfW2O43xxZ3g==
-
 fs-minipass@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/fs-minipass/-/fs-minipass-2.1.0.tgz#7f5036fdbf12c63c169190cbe4199c852271f9fb"

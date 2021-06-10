@@ -3,8 +3,8 @@
   "version": "0.1.2",
   "description": "Gets the pid of another process",
   "main": "src/index.js",
-  "repository": "git@github.com:implausible/win32ReadCwd.git",
-  "author": "Tyler Ang-Wanek <tylerw@axosoft.com>",
+  "repository": "https://github.com/Axosoft/get-cwd-of-process",
+  "author": "Axosoft, LLC",
   "license": "MIT",
   "scripts": {
     "install": "node scripts/install.js"

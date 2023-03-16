@@ -1,13 +1,23 @@
 const assert = require('assert');
 const { promises: fs } = require('fs');
-const path = require('path');
 
 const helpers = require('./helpers');
 
 const platformFunctions = {
   darwin: async (processId) => {
     try {
-      const { stdout } = await helpers.exec(`lsof -Ffn -p ${processId}`);
+      /*
+       * -a: and selection of -d and -p
+       * -d cwd: only include cwd file descriptor (speedup)
+       * -b: avoid potentially blocking calls (speedup, unnecessary for our purposes: getting the cwd)
+       * -w: don't print warning messages (like from -b)
+       * -P: don't convert port numbers to names (speedup)
+       * -l: don't convert user ID numbers to names (speedup)
+       * -n: don't convert network numbers to host names for network files (speedup)
+       * -Ffn: -F formats output for machines (f: file descriptors, n: file name)
+       * -p: PID to lookup
+       */
+      const { stdout } = await helpers.exec(`lsof -a -d cwd -bwPln -Ffn -p ${processId}`);
       const searchString = 'fcwd\nn';
       let startingIndex = stdout.indexOf(searchString);
       if (startingIndex === -1) {

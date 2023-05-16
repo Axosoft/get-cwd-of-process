@@ -13,7 +13,7 @@ const die = (msg) => {
 
 const getMSBuild = async () => {
   try {
-    return (await findVisualStudio(null, '2017')).msBuild;
+    return (await findVisualStudio(null, null)).msBuild;
   } catch (error) {
     return '';
   }

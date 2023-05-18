@@ -1,4 +1,5 @@
 node_modules
 msvs/x64
 msvs/Release
+msvs/.vs
 bin

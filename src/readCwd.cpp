@@ -59,20 +59,34 @@ struct NtCall {
     nt_readVirtualMemory readVirtualMemory;
 };
 
-Napi::Value throwError(Napi::Env env, Napi::Error err) {
-  err.ThrowAsJavaScriptException();
-  return env.Null();
-}
-
 class GetCwdOfProcess : public Napi::Addon<GetCwdOfProcess> {
   NtCall nt;
 
   void initializeNtCall() {
     this->nt.p_ntdll = GetModuleHandleW(L"ntdll.dll");
-    this->nt.close = nt_close(GetProcAddress(this->nt.p_ntdll, "NtClose"));
-    this->nt.openProcess = nt_openProcess(GetProcAddress(this->nt.p_ntdll, "NtOpenProcess"));
-    this->nt.queryInformationProcess = nt_queryInformationProcess(GetProcAddress(this->nt.p_ntdll, "NtQueryInformationProcess"));
-    this->nt.readVirtualMemory = nt_readVirtualMemory(GetProcAddress(this->nt.p_ntdll, "NtReadVirtualMemory"));
+    if (!this->nt.p_ntdll) {
+      throw std::runtime_error{"unable to get handle to ntdll.dll"};
+    }
+
+    this->nt.close = (nt_close)GetProcAddress(this->nt.p_ntdll, "NtClose");
+    if (!this->nt.close) {
+      throw std::runtime_error{"unable to find NtClose"};
+    }
+
+    this->nt.openProcess = (nt_openProcess)GetProcAddress(this->nt.p_ntdll, "NtOpenProcess");
+    if (!this->nt.openProcess) {
+      throw std::runtime_error{"unable to find NtOpenProcess"};
+    }
+
+    this->nt.queryInformationProcess = (nt_queryInformationProcess)GetProcAddress(this->nt.p_ntdll, "NtQueryInformationProcess");
+    if (!this->nt.queryInformationProcess) {
+      throw std::runtime_error{"unable to find NtQueryInformationProcess"};
+    }
+
+    this->nt.readVirtualMemory = (nt_readVirtualMemory)GetProcAddress(this->nt.p_ntdll, "NtReadVirtualMemory");
+    if (!this->nt.readVirtualMemory) {
+      throw std::runtime_error{"unable to find NtReadVirtualMemory"};
+    }
   }
 
   NTSTATUS readCwd(wchar_t **outputString, unsigned long pid) {
@@ -232,25 +246,29 @@ class GetCwdOfProcess : public Napi::Addon<GetCwdOfProcess> {
 
 public:
   GetCwdOfProcess(Napi::Env env, Napi::Object exports) {
-    initializeNtCall();
+    try {
+      initializeNtCall();
+    } catch (const std::runtime_error &e) {
+      throw Napi::Error::New(env, std::string("Failed to initialize: ") + e.what());
+    }
+    
     DefineAddon(exports, {
       InstanceMethod("readCwd", &GetCwdOfProcess::ReadCwd),
     });
   }
 
   Napi::Value ReadCwd(const Napi::CallbackInfo& info) {
-    if (info.Length() < 1 || !info[0].IsNumber()) {
-      Napi::TypeError::New(info.Env(), "Expected a number for the first argument").ThrowAsJavaScriptException();
-      return info.Env().Null();
+    // unfortunately 0 is the default value when trying to coerce a value into a number
+    // but pid 0 is the System Idle Process which we aren't allowed to query anyways
+    uint32_t pid = 0;
+    if (info.Length() < 1 || !(pid = (uint32_t)info[0].ToNumber())) {
+      throw Napi::Error::New(info.Env(), "Expected a pid");
     }
-
-    uint32_t pid = info[0].As<Napi::Number>().Uint32Value();
 
     NTSTATUS status;
     PWCHAR str;
     if (!NT_SUCCESS(status = readCwd(&str, pid))) {
-      Napi::Error::New(info.Env(), "readCwd failed").ThrowAsJavaScriptException();
-      return info.Env().Null();
+      throw Napi::Error::New(info.Env(), std::string("failed with status code: ") + std::to_string(status));
     }
 
     std::wstring wide_string{ str };

@@ -2,7 +2,7 @@
   "name": "get-cwd-of-process",
   "version": "0.1.4",
   "description": "Gets the pid of another process",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "repository": "https://github.com/Axosoft/get-cwd-of-process",
   "author": "Axosoft, LLC",
   "license": "MIT",
@@ -10,6 +10,7 @@
     "install": "node scripts/install.js"
   },
   "dependencies": {
-    "node-gyp": "^8.0.0"
+    "node-addon-api": "^8.0.0",
+    "node-gyp": "^10.1.0"
   }
 }

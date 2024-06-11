@@ -1,7 +1,7 @@
 {
   "name": "get-cwd-of-process",
-  "version": "0.1.4",
-  "description": "Gets the pid of another process",
+  "version": "0.2.0",
+  "description": "Gets the working-directory of another process",
   "main": "lib/index.js",
   "repository": "https://github.com/Axosoft/get-cwd-of-process",
   "author": "Axosoft, LLC",

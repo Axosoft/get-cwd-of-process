@@ -10,7 +10,7 @@ const main = async () => {
   const args = ['configure', 'rebuild'];
 
   await new Promise((resolve, reject) => {
-    const spawnedProc = spawn(nodeGypPath, args, {stdio: 'inherit', shell: true})
+    const spawnedProc = spawn(`"${nodeGypPath}" ${args.join(' ')}`, { stdio: 'inherit', shell: true });
 
     spawnedProc.on('close', (code) => {
       if (code === 0) {

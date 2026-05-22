@@ -5,9 +5,25 @@
       "dependencies": [
         "<!(node -p \"require('node-addon-api').targets\"):node_addon_api_except"
       ],
-      "sources": [
-        "src/readCwd.cpp",
-      ],
+      "conditions": [
+        [
+          "OS=='mac'", {
+            "libraries": [
+              "-lproc"
+            ],
+            "sources": [
+              "src/darwin/readCwd.cpp"
+            ]
+          }
+        ],
+        [
+          "OS=='win'", {
+            "sources": [
+              "src/readCwd.cpp"
+            ]
+          }
+        ]
+      ]
     }
   ]
 }

@@ -2,11 +2,15 @@ const path = require('path');
 var spawn = require("child_process").spawn;
 
 const main = async () => {
-  if (process.platform !== 'win32') {
+  if (process.platform !== 'win32' && process.platform !== 'darwin') {
     return;
   }
 
-  const nodeGypPath = path.resolve(path.join(__dirname, '..', 'node_modules', '.bin', 'node-gyp.cmd'));
+  const nodeGypPath = path.resolve(path.join(__dirname, '..', 'node_modules', '.bin', 'node-gyp'));
+  if (process.platform === 'win32') {
+    nodeGypPath += '.cmd'
+  }
+
   const args = ['configure', 'rebuild'];
 
   await new Promise((resolve, reject) => {

@@ -6,7 +6,7 @@ const main = async () => {
     return;
   }
 
-  const nodeGypPath = path.resolve(path.join(__dirname, '..', 'node_modules', '.bin', 'node-gyp'));
+  let nodeGypPath = path.resolve(path.join(__dirname, '..', 'node_modules', '.bin', 'node-gyp'));
   if (process.platform === 'win32') {
     nodeGypPath += '.cmd'
   }

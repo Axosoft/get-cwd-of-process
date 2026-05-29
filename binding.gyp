@@ -19,7 +19,7 @@
         [
           "OS=='win'", {
             "sources": [
-              "src/readCwd.cpp"
+              "src/win/readCwd.cpp"
             ]
           }
         ]
